@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineNLP — AI Movie Intelligence</title>
+    <meta name="description" content="Explore movies with AI-powered genre classification and word relevance analysis using NLP models.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-brand">
+            <span class="nav-icon">🎬</span>
+            <span class="nav-title">CineNLP</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn active" data-section="search" id="nav-search">🔍 Search</button>
+            <button class="nav-btn" data-section="dashboard" id="nav-dashboard">📊 Models</button>
+        </div>
+    </nav>
+
+    <!-- Hero Search Section -->
+    <section class="hero" id="section-search">
+        <div class="hero-content">
+            <h1 class="hero-title">Discover Movies with <span class="gradient-text">AI Intelligence</span></h1>
+            <p class="hero-subtitle">Search for movies, classify genres with NB / LR / SVM, and explore word relevance</p>
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="Search movies... (e.g., action, inception, horror)" autocomplete="off">
+                <button id="search-btn" class="search-btn">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Movies Grid -->
+    <section class="movies-section" id="movies-section" style="display:none;">
+        <div class="section-header">
+            <h2 id="results-title">Results</h2>
+            <span class="results-count" id="results-count"></span>
+        </div>
+        <div class="movies-grid" id="movies-grid"></div>
+        <div class="load-more-container" id="load-more-container" style="display:none;">
+            <button class="btn-secondary" id="load-more-btn">Load More</button>
+        </div>
+    </section>
+
+    <!-- Movie Detail Modal -->
+    <div class="modal-overlay" id="modal-overlay" style="display:none;">
+        <div class="modal" id="movie-modal">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-body">
+                <div class="modal-poster-side">
+                    <img id="modal-poster" src="" alt="Movie Poster" class="modal-poster">
+                    <div class="modal-meta">
+                        <span class="meta-badge" id="modal-rating">⭐ —</span>
+                        <span class="meta-badge" id="modal-year">📅 —</span>
+                        <span class="meta-badge" id="modal-runtime">⏱️ —</span>
+                    </div>
+                </div>
+                <div class="modal-info-side">
+                    <h2 class="modal-title" id="modal-title"></h2>
+                    <div class="modal-genre-tags" id="modal-genre-tags"></div>
+                    <p class="modal-director" id="modal-director"></p>
+                    <p class="modal-actors" id="modal-actors"></p>
+                    <p class="modal-plot" id="modal-plot"></p>
+
+                    <!-- Genre Analysis -->
+                    <div class="analysis-section">
+                        <h3 class="analysis-title">🧠 AI Genre Classification</h3>
+                        <p class="analysis-desc">NB, LR, and SVM predictions based on the movie's plot:</p>
+                        <div class="model-cards" id="model-cards">
+                            <div class="model-card loading-card" id="card-nb"><div class="spinner"></div></div>
+                            <div class="model-card loading-card" id="card-lr"><div class="spinner"></div></div>
+                            <div class="model-card loading-card" id="card-svm"><div class="spinner"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Word Relevance -->
+                    <div class="analysis-section">
+                        <h3 class="analysis-title">🔤 Word Relevance Checker</h3>
+                        <p class="analysis-desc">Type a word to see how relevant it is to this movie:</p>
+                        <div class="word-input-row">
+                            <input type="text" id="word-input" class="word-input" placeholder="e.g., action, romance, horror...">
+                            <button id="word-btn" class="word-btn">Check</button>
+                        </div>
+                        <div id="word-results" class="word-results" style="display:none;"></div>
+                    </div>
+                    
+                    <!-- Similar Movies -->
+                    <div class="analysis-section" id="similar-movies-section" style="display:none;">
+                        <h3 class="analysis-title">🔗 Similar Movies</h3>
+                        <p class="analysis-desc">Recommended based on semantic plot similarity:</p>
+                        <div class="similar-movies-list" id="similar-movies-list">
+                            <!-- Cards inserted by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard-section" id="section-dashboard" style="display:none;">
+        <div class="dashboard-header">
+            <h2 class="dashboard-title">📊 Model Performance Dashboard</h2>
+            <p class="dashboard-subtitle">Comparing Naive Bayes, Logistic Regression, and SVM on genre classification</p>
+        </div>
+        <div class="dashboard-grid" id="dashboard-grid">
+            <!-- ML Metrics -->
+            <div class="dash-card">
+                <h3>Accuracy</h3>
+                <div class="chart-container"><canvas id="chart-accuracy"></canvas></div>
+            </div>
+            <div class="dash-card">
+                <h3>Precision</h3>
+                <div class="chart-container"><canvas id="chart-precision"></canvas></div>
+            </div>
+            <div class="dash-card">
+                <h3>Recall</h3>
+                <div class="chart-container"><canvas id="chart-recall"></canvas></div>
+            </div>
+            <div class="dash-card">
+                <h3>F1 Score</h3>
+                <div class="chart-container"><canvas id="chart-f1"></canvas></div>
+            </div>
+            <div class="dash-card dash-card-wide">
+                <h3>Hyperparameters & Cross-Validation</h3>
+                <div class="params-table-container" id="params-table"></div>
+            </div>
+            
+            <!-- EDA Metrics -->
+            <div class="dash-card" style="grid-column: span 2;">
+                <h3>Dataset Genre Distribution</h3>
+                <div class="chart-container" style="height: 300px;"><canvas id="chart-genres"></canvas></div>
+            </div>
+            <div class="dash-card" style="grid-column: span 2;">
+                <h3>Top Feature Words by Genre (TF-IDF)</h3>
+                <div class="genre-selector" id="top-words-selector">
+                    <!-- Genre buttons inserted here -->
+                </div>
+                <div class="word-cloud-container" id="word-cloud-container">
+                    <!-- Word tags inserted here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay" style="display:none;">
+        <div class="loading-content">
+            <div class="spinner-large"></div>
+            <p>Analyzing...</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
