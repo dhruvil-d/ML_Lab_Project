@@ -1,247 +1,453 @@
-/* ===== CineNLP — Premium Dark Theme Stylesheet ===== */
+/* ============================================================
+   CineNLP / Cinematrix — Premium Dark Theme Stylesheet
+   
+   This CSS file defines the complete visual design system:
+   - CSS custom properties (design tokens) for colours, spacing, etc.
+   - Layout for navbar, hero, movie grid, modal, and dashboard
+   - Glassmorphism effects (blur, transparency, borders)
+   - Animations (fade-in, scale-in, spin) for micro-interactions
+   - Responsive breakpoints for mobile adaptation
+   ============================================================ */
 
+/* ===== Design Tokens (CSS Custom Properties) ===== */
+/* Centralised colour palette, spacing, and typography.
+   Change these variables to theme the entire app. */
 :root {
-    --bg-primary: #0a0e17;
-    --bg-secondary: #111827;
-    --bg-card: rgba(17, 24, 39, 0.7);
-    --bg-glass: rgba(255, 255, 255, 0.05);
-    --border-glass: rgba(255, 255, 255, 0.1);
-    --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    --accent-blue: #3b82f6;
-    --accent-purple: #8b5cf6;
-    --accent-green: #22c55e;
-    --accent-red: #ef4444;
-    --accent-orange: #f97316;
-    --accent-yellow: #eab308;
-    --gradient-main: linear-gradient(135deg, #3b82f6, #8b5cf6);
-    --gradient-card: linear-gradient(145deg, rgba(59,130,246,0.15), rgba(139,92,246,0.08));
-    --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.15);
-    --radius: 16px;
-    --radius-sm: 10px;
+    /* Background colours — dark palette with transparency layers */
+    --bg-primary: #0a0e17;                           /* Main page background (deep navy) */
+    --bg-secondary: #111827;                          /* Card/modal background (slightly lighter) */
+    --bg-card: rgba(17, 24, 39, 0.7);                /* Card background with transparency */
+    --bg-glass: rgba(255, 255, 255, 0.05);            /* Glassmorphism surface (very subtle white) */
+    --border-glass: rgba(255, 255, 255, 0.1);         /* Glassmorphism border (subtle white edge) */
+
+    /* Text colours — light-on-dark hierarchy */
+    --text-primary: #f1f5f9;                          /* Primary text (near-white) */
+    --text-secondary: #94a3b8;                        /* Secondary text (slate grey) */
+    --text-muted: #64748b;                            /* Muted/disabled text (darker grey) */
+
+    /* Accent colours — used for interactive elements and data visualisation */
+    --accent-blue: #3b82f6;                           /* Primary accent (buttons, links, focus rings) */
+    --accent-purple: #8b5cf6;                         /* Secondary accent (genre tags, LR model) */
+    --accent-green: #22c55e;                          /* Success/positive (SVM model, similarity scores) */
+    --accent-red: #ef4444;                            /* Danger/error (close buttons, error messages) */
+    --accent-orange: #f97316;                         /* Warning/medium scores */
+    --accent-yellow: #eab308;                         /* Caution/neutral scores */
+
+    /* Gradients */
+    --gradient-main: linear-gradient(135deg, #3b82f6, #8b5cf6);   /* Blue-to-purple gradient (buttons, headings) */
+    --gradient-card: linear-gradient(145deg, rgba(59,130,246,0.15), rgba(139,92,246,0.08));  /* Subtle card background gradient */
+
+    /* Shadows */
+    --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.15);  /* Blue glow effect for focused/hovered elements */
+
+    /* Border radius — consistent rounding across all components */
+    --radius: 16px;                                   /* Large radius for cards and modals */
+    --radius-sm: 10px;                                /* Small radius for inputs and badges */
+
+    /* Transition — smooth cubic-bezier for all interactive state changes */
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Typography — Inter font with system fallbacks */
     --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+/* ===== Global Reset ===== */
+/* Remove default margins/padding and use border-box sizing for consistent layouts */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* ===== Base Body Styles ===== */
 body {
-    font-family: var(--font);
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    min-height: 100vh;
-    overflow-x: hidden;
+    font-family: var(--font);           /* Set the global font */
+    background: var(--bg-primary);       /* Dark background */
+    color: var(--text-primary);          /* Light text */
+    min-height: 100vh;                   /* Full viewport height minimum */
+    overflow-x: hidden;                  /* Prevent horizontal scroll from animations */
 }
 
-/* ===== Navbar ===== */
+/* ============================================================
+   NAVBAR — Fixed top navigation bar with glassmorphism effect
+   ============================================================ */
 .navbar {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0 32px; height: 64px;
-    background: rgba(10, 14, 23, 0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-glass);
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;  /* Fixed at top, above all content */
+    display: flex; justify-content: space-between; align-items: center;  /* Space brand and links apart */
+    padding: 0 32px; height: 64px;                               /* Fixed height with horizontal padding */
+    background: rgba(10, 14, 23, 0.85);                          /* Semi-transparent dark background */
+    backdrop-filter: blur(20px);                                  /* Frosted glass blur effect */
+    border-bottom: 1px solid var(--border-glass);                 /* Subtle bottom border */
 }
+
+/* Nav brand: icon + title side by side */
 .nav-brand { display: flex; align-items: center; gap: 10px; }
+
+/* Movie clapper emoji icon */
 .nav-icon { font-size: 28px; }
+
+/* App title with gradient text effect */
 .nav-title { font-size: 22px; font-weight: 800; background: var(--gradient-main); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* Nav links container */
 .nav-links { display: flex; gap: 8px; }
+
+/* Individual nav button (pill-shaped) */
 .nav-btn {
     background: transparent; border: 1px solid transparent; color: var(--text-secondary);
     padding: 8px 20px; border-radius: 999px; font-size: 14px; font-weight: 500;
     cursor: pointer; transition: var(--transition); font-family: var(--font);
 }
+
+/* Hover state: brighten text and add glass background */
 .nav-btn:hover { color: var(--text-primary); background: var(--bg-glass); }
+
+/* Active state: blue tinted background with visible border */
 .nav-btn.active { color: var(--text-primary); background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.3); }
 
-/* ===== Hero ===== */
+/* ============================================================
+   HERO SECTION — Landing area with search bar
+   ============================================================ */
 .hero {
-    padding: 140px 32px 60px;
+    padding: 140px 32px 60px;            /* Extra top padding to clear the fixed navbar */
     text-align: center;
+    /* Radial gradient creates a subtle blue glow behind the heading */
     background: radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.12) 0%, transparent 60%);
 }
+
+/* Hero title: responsive font size using clamp() */
 .hero-title { font-size: clamp(28px, 5vw, 48px); font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+
+/* Gradient text effect for the "Movies" keyword */
 .gradient-text { background: var(--gradient-main); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* Subtitle with secondary colour and centered auto margins */
 .hero-subtitle { color: var(--text-secondary); font-size: 16px; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+/* Search bar container: pill-shaped with glow shadow */
 .search-container {
     display: flex; max-width: 640px; margin: 0 auto;
     background: var(--bg-secondary); border: 1px solid var(--border-glass);
     border-radius: 999px; overflow: hidden; transition: var(--transition);
-    box-shadow: var(--shadow-glow);
+    box-shadow: var(--shadow-glow);     /* Default blue glow */
 }
+
+/* Focus state: brighter border and stronger glow */
 .search-container:focus-within { border-color: var(--accent-blue); box-shadow: 0 0 40px rgba(59,130,246,0.25); }
+
+/* Search text input — flex-grows to fill available space */
 .search-input {
     flex: 1; background: transparent; border: none; padding: 16px 24px;
     color: var(--text-primary); font-size: 16px; outline: none; font-family: var(--font);
 }
+
+/* Placeholder text colour */
 .search-input::placeholder { color: var(--text-muted); }
+
+/* Search submit button with gradient background */
 .search-btn {
     background: var(--gradient-main); border: none; color: white;
     padding: 16px 32px; font-size: 15px; font-weight: 600; cursor: pointer;
     transition: var(--transition); font-family: var(--font);
 }
+
+/* Hover: slight scale-up and opacity reduction */
 .search-btn:hover { opacity: 0.9; transform: scale(1.02); }
 
-/* ===== Movies Section ===== */
+/* ============================================================
+   MOVIES SECTION — Grid of movie result cards
+   ============================================================ */
 .movies-section { padding: 20px 32px 60px; max-width: 1280px; margin: 0 auto; }
+
+/* Section header: title on left, count on right */
 .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
 .section-header h2 { font-size: 22px; font-weight: 700; }
 .results-count { color: var(--text-muted); font-size: 14px; }
+
+/* Responsive grid: auto-fills columns based on available width (min 180px each) */
 .movies-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
 
+/* Individual movie card — glass card with hover lift effect */
 .movie-card {
     background: var(--bg-card); border: 1px solid var(--border-glass);
     border-radius: var(--radius); overflow: hidden; cursor: pointer;
-    transition: var(--transition); animation: fadeInUp 0.4s ease forwards;
-    opacity: 0;
+    transition: var(--transition);
+    animation: fadeInUp 0.4s ease forwards;  /* Entrance animation */
+    opacity: 0;                               /* Start invisible for the animation */
 }
+
+/* Hover: lift up with blue border glow */
 .movie-card:hover { transform: translateY(-6px); border-color: rgba(59,130,246,0.4); box-shadow: var(--shadow-glow); }
+
+/* Movie poster image — fixed height, cover-fit */
 .movie-card img { width: 100%; height: 270px; object-fit: cover; display: block; }
+
+/* Movie card text area */
 .movie-card-info { padding: 12px; }
+
+/* Movie title — single line with ellipsis overflow */
 .movie-card-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Movie year in muted colour */
 .movie-card-year { font-size: 12px; color: var(--text-muted); }
+
+/* Fallback placeholder when no poster image is available */
 .no-poster { width: 100%; height: 270px; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; font-size: 48px; color: var(--text-muted); }
 
+/* Entrance animation: slides up from 20px below while fading in */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Load More button container */
 .load-more-container { text-align: center; margin-top: 32px; }
+
+/* Secondary button style (glass pill) */
 .btn-secondary {
     background: var(--bg-glass); border: 1px solid var(--border-glass); color: var(--text-primary);
     padding: 12px 32px; border-radius: 999px; font-size: 14px; font-weight: 500;
     cursor: pointer; transition: var(--transition); font-family: var(--font);
 }
+
+/* Hover: blue tint */
 .btn-secondary:hover { background: rgba(59,130,246,0.15); border-color: var(--accent-blue); }
 
-/* ===== Modal ===== */
+/* ============================================================
+   MODAL — Movie detail overlay
+   ============================================================ */
+
+/* Full-screen overlay with dark semi-transparent background and blur */
 .modal-overlay {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 2000;
     background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
     display: flex; align-items: center; justify-content: center; padding: 32px;
-    animation: fadeIn 0.2s ease;
+    animation: fadeIn 0.2s ease;  /* Quick fade-in for the backdrop */
 }
+
+/* Modal dialog box — dark card with max dimensions and scrolling */
 .modal {
     background: var(--bg-secondary); border: 1px solid var(--border-glass);
     border-radius: var(--radius); max-width: 960px; width: 100%; max-height: 85vh;
-    overflow-y: auto; position: relative; animation: scaleIn 0.3s ease;
+    overflow-y: auto; position: relative;
+    animation: scaleIn 0.3s ease;  /* Scale-up entrance animation */
 }
+
+/* Simple fade-in animation */
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Scale-up animation from 95% to 100% */
 @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+/* Close button (×) — circular, positioned top-right */
 .modal-close {
     position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.1);
     border: none; color: var(--text-primary); width: 36px; height: 36px; border-radius: 50%;
     font-size: 20px; cursor: pointer; transition: var(--transition); z-index: 10;
 }
+
+/* Close button hover: turns red */
 .modal-close:hover { background: var(--accent-red); }
+
+/* Modal body: two-column layout (poster left, info right) */
 .modal-body { display: flex; gap: 32px; padding: 32px; }
+
+/* Poster column: fixed width, doesn't shrink */
 .modal-poster-side { flex-shrink: 0; width: 240px; }
+
+/* Poster image with rounded corners and shadow */
 .modal-poster { width: 100%; border-radius: var(--radius-sm); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+
+/* Metadata badges container (rating, year, runtime) */
 .modal-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+/* Individual metadata badge — glass pill style */
 .meta-badge {
     background: var(--bg-glass); border: 1px solid var(--border-glass);
     padding: 4px 12px; border-radius: 999px; font-size: 12px; color: var(--text-secondary);
 }
+
+/* Info column: flexible width, can shrink */
 .modal-info-side { flex: 1; min-width: 0; }
+
+/* Movie title in the modal */
 .modal-title { font-size: 28px; font-weight: 800; margin-bottom: 12px; }
+
+/* Genre tags container */
 .modal-genre-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+
+/* Individual genre tag — purple pill style */
 .genre-tag {
     background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3);
     color: var(--accent-purple); padding: 4px 14px; border-radius: 999px; font-size: 12px; font-weight: 500;
 }
+
+/* Director and actors text lines */
 .modal-director, .modal-actors { font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
+
+/* Plot text with increased line height for readability */
 .modal-plot { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-top: 12px; margin-bottom: 24px; }
 
-/* ===== Analysis Section ===== */
+/* ============================================================
+   ANALYSIS SECTION — AI genre classification & word relevance
+   ============================================================ */
 .analysis-section { margin-bottom: 28px; }
 .analysis-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
 .analysis-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
 
+/* --- Model Cards Grid (3 columns: one per classifier) --- */
 .model-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+/* Individual model card with subtle gradient background */
 .model-card {
     background: var(--gradient-card); border: 1px solid var(--border-glass);
     border-radius: var(--radius-sm); padding: 16px; transition: var(--transition);
 }
+
+/* Hover: brighter border */
 .model-card:hover { border-color: rgba(59,130,246,0.4); }
+
+/* Model name label (uppercase, spaced) */
 .model-card-name { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+
+/* Prediction genre text (large, bold) */
 .model-card-pred { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+
+/* Confidence percentage text */
 .model-card-conf { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
+
+/* Confidence progress bar (track) */
 .conf-bar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+
+/* Confidence progress bar (fill) — width animated via JS */
 .conf-bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Loading card state — centers the spinner */
 .loading-card { display: flex; align-items: center; justify-content: center; min-height: 100px; }
 
-/* ===== Word Relevance ===== */
+/* ============================================================
+   WORD RELEVANCE — Input and results display
+   ============================================================ */
+
+/* Input row: text field + button side by side */
 .word-input-row { display: flex; gap: 8px; margin-bottom: 16px; }
+
+/* Word text input with glass styling */
 .word-input {
     flex: 1; background: var(--bg-glass); border: 1px solid var(--border-glass);
     padding: 12px 16px; border-radius: var(--radius-sm); color: var(--text-primary);
     font-size: 14px; outline: none; transition: var(--transition); font-family: var(--font);
 }
+
+/* Focus state: blue border highlight */
 .word-input:focus { border-color: var(--accent-blue); }
+
+/* Check button with gradient background */
 .word-btn {
     background: var(--gradient-main); border: none; color: white; padding: 12px 24px;
     border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer;
     transition: var(--transition); font-family: var(--font);
 }
+
 .word-btn:hover { opacity: 0.9; }
+
+/* Results container with glass background */
 .word-results {
     background: var(--bg-glass); border: 1px solid var(--border-glass);
     border-radius: var(--radius-sm); padding: 20px; animation: fadeIn 0.3s ease;
 }
+
+/* Relevance header: word on left, score on right */
 .relevance-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .relevance-word { font-size: 16px; font-weight: 600; }
 .relevance-score-big { font-size: 32px; font-weight: 800; }
+
+/* Relevance progress bar */
 .relevance-bar { height: 10px; background: rgba(255,255,255,0.08); border-radius: 5px; overflow: hidden; margin-bottom: 20px; }
 .relevance-bar-fill { height: 100%; border-radius: 5px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Model scores: 3-column grid of individual score items */
 .model-scores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+/* Single model score card */
 .model-score-item {
     background: rgba(255,255,255,0.03); border-radius: 8px; padding: 12px; text-align: center;
 }
 .model-score-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
 .model-score-val { font-size: 20px; font-weight: 700; }
+
+/* Message when a word is not found in vocabulary */
 .word-not-found { color: var(--accent-orange); font-size: 14px; text-align: center; padding: 16px; }
 
-/* ===== Dashboard ===== */
+/* ============================================================
+   DASHBOARD — Model metrics and EDA visualisations
+   ============================================================ */
 .dashboard-section { padding: 100px 32px 60px; max-width: 1280px; margin: 0 auto; }
+
+/* Dashboard header text */
 .dashboard-header { text-align: center; margin-bottom: 40px; }
 .dashboard-title { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
 .dashboard-subtitle { color: var(--text-secondary); font-size: 15px; }
+
+/* Dashboard cards grid: 2 columns */
 .dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+
+/* Individual dashboard card with glass styling */
 .dash-card {
     background: var(--bg-card); border: 1px solid var(--border-glass);
     border-radius: var(--radius); padding: 24px; transition: var(--transition);
 }
+
+/* Hover: subtle blue border highlight */
 .dash-card:hover { border-color: rgba(59,130,246,0.3); }
+
+/* Card heading */
 .dash-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: var(--text-secondary); }
+
+/* Wide card variant — spans full width of the 2-column grid */
 .dash-card-wide { grid-column: 1 / -1; }
+
+/* Chart container with fixed height for Chart.js canvases */
 .chart-container { height: 250px; position: relative; }
 
-.params-table-container { overflow-x: auto; }
+/* ===== Hyperparameters Table ===== */
+.params-table-container { overflow-x: auto; }  /* Horizontal scroll for narrow screens */
+
 .params-table {
     width: 100%; border-collapse: collapse; font-size: 14px;
 }
+
+/* Table header cells — uppercase labels with bottom border */
 .params-table th {
     text-align: left; padding: 12px 16px; color: var(--text-muted);
     border-bottom: 1px solid var(--border-glass); font-weight: 500; font-size: 12px;
     text-transform: uppercase; letter-spacing: 0.5px;
 }
+
+/* Table data cells — light text with faint bottom border */
 .params-table td {
     padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.04);
     color: var(--text-primary);
 }
+
+/* Row hover highlight */
 .params-table tr:hover td { background: rgba(255,255,255,0.02); }
 
-/* ===== Spinners ===== */
+/* ============================================================
+   SPINNERS — Loading indicators
+   ============================================================ */
+
+/* Small spinner (used inside model cards) */
 .spinner {
     width: 24px; height: 24px; border: 3px solid var(--border-glass);
-    border-top-color: var(--accent-blue); border-radius: 50%;
+    border-top-color: var(--accent-blue);  /* Only top segment is coloured → spinning effect */
+    border-radius: 50%;
     animation: spin 0.7s linear infinite;
 }
+
+/* Large spinner (used in full-screen loading overlay) */
 .spinner-large { width: 40px; height: 40px; border-width: 4px; }
+
+/* Spin animation — continuous 360° rotation */
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* Full-screen loading overlay — dark backdrop with centered spinner */
 .loading-overlay {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 3000;
     background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
@@ -251,44 +457,59 @@ body {
 .loading-content .spinner-large { margin: 0 auto 16px; border: 4px solid var(--border-glass); border-top-color: var(--accent-blue); }
 
 
-/* ===== Similar Movies ===== */
+/* ============================================================
+   SIMILAR MOVIES — Horizontally scrollable recommendation strip
+   ============================================================ */
+
+/* Horizontal scroll container for similar movie cards */
 .similar-movies-list {
     display: flex;
-    overflow-x: auto;
+    overflow-x: auto;         /* Enable horizontal scrolling */
     gap: 16px;
     padding-bottom: 8px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-glass) transparent;
+    scrollbar-width: thin;    /* Firefox thin scrollbar */
+    scrollbar-color: var(--border-glass) transparent;  /* Firefox scrollbar colour */
 }
+
+/* WebKit/Chrome scrollbar styling */
 .similar-movies-list::-webkit-scrollbar { height: 6px; }
 .similar-movies-list::-webkit-scrollbar-thumb { background: var(--border-glass); border-radius: 3px; }
 
+/* Individual similar movie card — fixed width, compact */
 .similar-movie-card {
-    flex: 0 0 110px;
+    flex: 0 0 110px;          /* Fixed 110px width, no grow/shrink */
     background: var(--bg-card);
     border: 1px solid var(--border-glass);
     border-radius: var(--radius-sm);
     overflow: hidden;
     cursor: pointer;
     transition: var(--transition);
-    position: relative;
+    position: relative;        /* For absolute-positioned info overlay */
 }
+
+/* Hover: blue border + slight lift */
 .similar-movie-card:hover {
     border-color: var(--accent-blue);
     transform: translateY(-4px);
 }
+
+/* Similar movie poster image */
 .similar-movie-card img {
     width: 100%;
     height: 160px;
     object-fit: cover;
     display: block;
 }
+
+/* Info overlay at bottom of card — gradient fade from transparent to dark */
 .similar-movie-info {
     padding: 8px;
     background: linear-gradient(to top, var(--bg-secondary) 80%, transparent);
     position: absolute;
     bottom: 0; left: 0; right: 0;
 }
+
+/* Similar movie title — single-line with ellipsis */
 .similar-movie-title {
     font-size: 11px;
     font-weight: 600;
@@ -297,19 +518,27 @@ body {
     text-overflow: ellipsis;
     margin-bottom: 2px;
 }
+
+/* Similarity score badge (green percentage) */
 .similar-movie-score {
     font-size: 10px;
     color: var(--accent-green);
     font-weight: 700;
 }
 
-/* ===== EDA Metrics ===== */
+/* ============================================================
+   EDA METRICS — Genre selector pills and word cloud
+   ============================================================ */
+
+/* Genre selector: wrapping row of pill buttons */
 .genre-selector {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 20px;
 }
+
+/* Individual genre pill button */
 .genre-pill {
     background: var(--bg-glass);
     border: 1px solid var(--border-glass);
@@ -320,10 +549,14 @@ body {
     cursor: pointer;
     transition: var(--transition);
 }
+
+/* Pill hover: brighter */
 .genre-pill:hover {
     background: rgba(255,255,255,0.1);
     color: var(--text-primary);
 }
+
+/* Active pill: blue-tinted with accent border */
 .genre-pill.active {
     background: rgba(59,130,246,0.15);
     border-color: var(--accent-blue);
@@ -331,6 +564,7 @@ body {
     font-weight: 600;
 }
 
+/* Word cloud container — centered flex wrap layout */
 .word-cloud-container {
     display: flex;
     flex-wrap: wrap;
@@ -338,30 +572,47 @@ body {
     justify-content: center;
     gap: 12px;
     padding: 24px;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.2);       /* Slightly darker than card background */
     border-radius: var(--radius-sm);
     min-height: 250px;
 }
+
+/* Individual word tag in the word cloud */
 .word-tag {
     transition: var(--transition);
     cursor: default;
-    opacity: 0;
-    animation: fadeIn 0.4s ease forwards;
+    opacity: 0;                          /* Starts invisible for staggered fade-in */
+    animation: fadeIn 0.4s ease forwards; /* Fade-in animation */
 }
+
+/* Hover: scale up with glowing text shadow */
 .word-tag:hover {
     transform: scale(1.1);
     color: white !important;
     text-shadow: 0 0 10px currentColor;
 }
 
-/* ===== Responsive ===== */
+/* ============================================================
+   RESPONSIVE DESIGN — Mobile breakpoints (≤768px)
+   ============================================================ */
 @media (max-width: 768px) {
+    /* Stack modal layout vertically on mobile */
     .modal-body { flex-direction: column; padding: 20px; }
+
+    /* Poster side becomes a horizontal row with smaller poster */
     .modal-poster-side { width: 100%; display: flex; gap: 16px; align-items: flex-start; }
     .modal-poster { width: 120px; flex-shrink: 0; }
+
+    /* Model cards and scores stack to single column */
     .model-cards { grid-template-columns: 1fr; }
     .model-scores { grid-template-columns: 1fr; }
+
+    /* Dashboard cards stack to single column */
     .dashboard-grid { grid-template-columns: 1fr; }
+
+    /* Movie grid cards become narrower on small screens */
     .movies-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+
+    /* Smaller hero title on mobile */
     .hero-title { font-size: 24px; }
 }
