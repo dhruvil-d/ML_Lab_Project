@@ -1,6 +1,6 @@
 # CineNLP — AI Movie Intelligence Dashboard
 
-![CineNLP](https://img.shields.io/badge/Status-Complete-success.svg)
+![Cinematrix](https://img.shields.io/badge/Status-Complete-success.svg)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)
 ![Flask](https://img.shields.io/badge/Flask-Web%2  Framework-black.svg)
 ![Machine Learning](https://img.shields.io/badge/Scikit--Learn-Machine%20Learning-orange.svg)
