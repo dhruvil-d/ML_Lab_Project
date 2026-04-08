@@ -6,7 +6,7 @@
 ![Machine Learning](https://img.shields.io/badge/Scikit--Learn-Machine%20Learning-orange.svg)
 ![NLP](https://img.shields.io/badge/spaCy-NLP-blueviolet.svg)
 
-CineNLP is a comprehensive, end-to-end Machine Learning web application designed to analyze, classify, and intelligently search through a database of movies. Moving entirely beyond simple keyword matching, CineNLP employs advanced **Semantic Search** and **TF-IDF Vectorization** to recommend similar movies, predict movie genres solely from reading the plot summary, and analyze the contextual relevance of words to specific films.
+Cinematrix is a comprehensive, end-to-end Machine Learning web application designed to analyze, classify, and intelligently search through a database of movies. Moving entirely beyond simple keyword matching, CineNLP employs advanced **Semantic Search** and **TF-IDF Vectorization** to recommend similar movies, predict movie genres solely from reading the plot summary, and analyze the contextual relevance of words to specific films.
 
 ---
 
